@@ -118,7 +118,7 @@ class Incentive(db.Model):
         return '%s' % (self.name)
 
     def donated(self):
-        donated_int = Donation.query.with_entities(func.sum(Donation.amount)).filter(Donation.incentive_id == self.id).scalar()
+        donated_int = Donation.query.with_entities(func.sum(Donation.amount)).filter(Donation.incentive_id == self.id).filter(Donation.status > 1).scalar()
         if donated_int: 
             return "%.2f" % (float(donated_int)/100.0)
         else:
