@@ -1,0 +1,9 @@
+﻿<form id="donate_paypal" action="{{ paypal_url }}" method="post">
+   {% for item in form_data.items() %}
+        <input type="hidden" name="{{ item[0] }}" value="{{ item[1] }}" />
+   {% endfor %}
+</form>
+
+<script type="text/javascript">
+    document.getElementById("donate_paypal").submit();
+</script>

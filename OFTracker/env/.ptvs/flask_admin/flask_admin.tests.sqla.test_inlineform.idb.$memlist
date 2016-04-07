@@ -1,0 +1,12 @@
+test_inline_form_self
+eq_
+test_inline_form_required
+ok_
+raises
+test_inline_form
+ModelView
+test_inline_form_ajax_fk
+ItemsRequired
+fields
+InlineModelFormList
+setup

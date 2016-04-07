@@ -1,0 +1,11 @@
+test_single_table_inheritance
+Model
+CustomModelView
+test_multiple_pk
+ok_
+declarative_base
+test_concrete_table_inheritance
+test_joined_inheritance
+eq_
+test_concrete_multipk_inheritance
+setup

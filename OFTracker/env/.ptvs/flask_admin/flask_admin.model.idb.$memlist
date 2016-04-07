@@ -1,0 +1,12 @@
+InlineFormAdmin
+action
+template
+widgets
+helpers
+filters
+typefmt
+form
+BaseModelView
+fields
+base
+ajax

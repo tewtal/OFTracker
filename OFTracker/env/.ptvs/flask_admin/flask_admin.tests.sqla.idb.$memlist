@@ -1,0 +1,11 @@
+test_translation
+Flask
+Admin
+test_multi_pk
+setup_postgres
+test_basic
+test_postgres
+SQLAlchemy
+test_inlineform
+test_form_rules
+setup

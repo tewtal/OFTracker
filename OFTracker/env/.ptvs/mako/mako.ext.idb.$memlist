@@ -1,0 +1,8 @@
+preprocessors
+pygmentplugin
+turbogears
+linguaplugin
+autohandler
+beaker_cache
+extract
+babelplugin

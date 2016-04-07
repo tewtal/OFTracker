@@ -1,0 +1,8 @@
+DEFAULT_FORMATTERS
+geom_formatter
+func
+BASE_FORMATTERS
+WKBElement
+Markup
+html_params
+to_shape

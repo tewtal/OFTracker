@@ -1,0 +1,15 @@
+create_table
+alter_column
+sa_schema
+drop_constraint
+add_column
+create_constraint
+rename_table
+drop_table
+drop_index
+create_index
+execute_sql
+ops
+drop_column
+bulk_insert
+Operations
