@@ -4,7 +4,7 @@
 
 <div class="jumbotron">
     <h1>Donate</h1>
-    <p class="lead">The Oceanfly to SGDQ 2016 marathon is a fundraiser to support two of the top-tier Super Metroid European runners (specifically Behemoth and Kottpower) to come to SGDQ 2016 and race together in any% during SGDQ 2016. The goal will be to raise enough money to cover the runner's plane ticket and hotel costs. Any extra money raised will go towards SGDQ 2016 charity.</p>
+    <p class="lead">{{ event.description }}</p>
     <p><a href="{{ url_for('donate') }}" class="btn btn-primary btn-large">Make a donation &raquo;</a></p>
 </div>
 
@@ -12,7 +12,7 @@
     <div class="col-md-6">
         <h2>Donations raised so far</h2>
         <p>
-            We've currently raised ${{ sum }} out of our target $3000.00.
+            We've currently raised ${{ event.donations() }} out of our target ${{ event.amount }}.
         </p>
     </div>
     <div class="col-md-6">

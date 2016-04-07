@@ -38,6 +38,9 @@
     <Compile Include="manage.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OFTracker\admin.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="OFTracker\auth.py">
       <SubType>Code</SubType>
     </Compile>
@@ -65,7 +68,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="oceanfly.pubxml" />
+    <Content Include="OFTracker\db\oftracker.db" />
     <Content Include="OFTracker\templates\donate_paypal.html" />
+    <Content Include="OFTracker\templates\incentives.html" />
+    <Content Include="OFTracker\templates\incentive_list.html" />
     <Content Include="OFTracker\templates\login.html" />
     <Content Include="OFTracker\templates\_formhelpers.html" />
     <Content Include="requirements.txt" />

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - Oceanfly to SGDQ 2016</title>
+    <title>{{ title }} - {{ event.name }}</title>
     <link rel="stylesheet" type="text/css" href="/static/content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
@@ -18,22 +18,34 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">Oceanfly to SGDQ 2016 Donation Tracker</a>
+                <a href="/" class="navbar-brand">{{ event.name }} Donation Tracker</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url_for('index') }}">Home</a></li>
                     <li><a href="{{ url_for('donate') }}">Donate</a></li>
+                    <li><a href="{{ url_for('incentives') }}">Incentives</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
     <div class="container body-content">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-info">
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
         <hr />
         <footer>
-            <p>&copy; 2016 - Oceanfly to SGDQ</p>
+            <p>&copy; {{ event.name }}</p>
         </footer>
     </div>
 

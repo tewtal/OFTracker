@@ -1,14 +1,10 @@
 from flask import Flask, g, url_for, redirect, request
-from flask_admin import Admin
+from flask_admin import expose, Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager, current_user
-
-class OFModelView(ModelView):
-    def is_accessible(self):
-        return current_user.is_authenticated
         
 app = Flask(__name__)
 app.debug = True
@@ -27,12 +23,15 @@ login_manager.login_view = 'login'
 import OFTracker.models
 import OFTracker.auth
 import OFTracker.views
+from OFTracker.admin import OFAdminIndexView, OFModelView, EventView, DonationView, IncentiveView, AdminModelView
 
-admin = Admin(app, name='OFTracker', template_mode='bootstrap3')
-admin.add_view(OFModelView(OFTracker.models.User, db.session))
-admin.add_view(OFModelView(OFTracker.models.Incentive, db.session))
-admin.add_view(OFModelView(OFTracker.models.Donation, db.session))
-admin.add_view(OFModelView(OFTracker.models.IPN, db.session))
+admin = Admin(app, url='/admin', name='OFTracker Administration', index_view=OFAdminIndexView(), template_mode='bootstrap3')
+admin.add_view(DonationView(OFTracker.models.Donation, db.session))
+admin.add_view(IncentiveView(OFTracker.models.Incentive, db.session))
+admin.add_view(EventView(OFTracker.models.Event, db.session))
+admin.add_view(AdminModelView(OFTracker.models.User, db.session))
+admin.add_view(AdminModelView(OFTracker.models.IPN, db.session))
+
 
 @login_manager.user_loader
 def load_user(id):
@@ -41,3 +40,4 @@ def load_user(id):
 @app.before_request
 def before_request():
     g.user = current_user
+    g.event = OFTracker.models.Event.query.get(1)

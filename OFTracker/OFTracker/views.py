@@ -7,7 +7,6 @@ from flask import Flask, session, request, flash, url_for, redirect, render_temp
 from OFTracker import app, db
 from OFTracker.models import Donation, Incentive, IPN
 from OFTracker.forms import DonateForm
-from OFTracker.settings import PAYPAL_URL
 from werkzeug.datastructures import ImmutableMultiDict
 from dateutil import parser
 import requests
@@ -18,23 +17,28 @@ def log(*objs):
 
 @app.route('/')
 def index():
-    sum_int = Donation.query.with_entities(func.sum(Donation.amount)).filter(Donation.status > 1).scalar()
-    sum = "%.2f" % (float(sum_int) / 100)
-
     incentives = Incentive.query.filter_by(status = 0).filter(Incentive.cutoff_time >= datetime.now()).order_by(Incentive.cutoff_time.asc()).limit(5).all()
-
     return render_template(
         'index.html',
-        title='Home Page',
-        year=datetime.now().year,
+        title='Index',
         sum=sum,
-        incentives = incentives
+        incentives=incentives,
+        event=g.event
+    )
+
+@app.route('/incentives')
+def incentives():
+    incentives = Incentive.query.filter(Incentive.id > 1).all()
+    return render_template(
+        'incentives.html',
+        event=g.event,
+        incentives=incentives
     )
 
 @app.route('/donate', methods=['GET', 'POST'])
 def donate():
     form = DonateForm(request.form)
-    incentives = [(i.id, i.name) for i in Incentive.query.filter_by(status = 0).all()]
+    incentives = [(1, 'No incentive')] + [(i.id, i.name) for i in Incentive.query.filter_by(status = 0).all()]
     form.incentive.choices = incentives
 
     if request.method == 'POST' and form.validate():
@@ -52,15 +56,17 @@ def donate():
             'currency_code' : 'USD',
             'return' : url_for('donated', _external=True),
             'notify_url' : url_for('ipn', _external=True),
-            'custom' : donation.hash
+            'custom' : donation.hash,
+            'lc' : 'US'            
         }
-        context = { 'form_data' : form_data, 'paypal_url' : PAYPAL_URL }
+        context = { 'form_data' : form_data, 'paypal_url' : g.event.paypal_url() }
         return render_template('donate_paypal.html', **context)
        
     context = { 'form' : form }
     return render_template(
         'donate.html',
         title='Donate',
+        event=g.event,
         **context
     )
 
@@ -72,7 +78,7 @@ def donated():
 @app.route('/ipn', methods=['POST'])
 def ipn():
     request_data = request.get_data()
-    validate_url = "%s?cmd=_notify-validate&%s" % (PAYPAL_URL, request_data)
+    validate_url = "%s?cmd=_notify-validate&%s" % (g.event.paypal_url(), request_data)
     status = ''
     r = None
     try:

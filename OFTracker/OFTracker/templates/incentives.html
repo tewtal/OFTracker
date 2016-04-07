@@ -1,0 +1,26 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Donation Incentive</th>
+                <th>Donations</th>
+                <th>Goal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for incentive in incentives %}
+            <tr>
+                <td>{{ incentive.name }}</td>
+                <td>{{ incentive.donated() }}</td>
+                <td>{{ incentive.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

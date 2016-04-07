@@ -7,7 +7,7 @@ from OFTracker.models import User
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'GET':
-		return render_template('login.html')
+		return render_template('login.html', event=g.event)
 	
 	username = request.form['username']
 	password = request.form['password']
@@ -27,7 +27,7 @@ def login():
 	
 	login_user(registered_user, remember = remember_me)
 	flash('Logged in successfully')
-	return redirect(request.args.get('next') or url_for('index'))
+	return redirect(url_for('admin.index'))
 
 @app.route('/logout')
 def logout():

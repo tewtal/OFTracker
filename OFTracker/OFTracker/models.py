@@ -39,8 +39,36 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
     
+    def is_admin(self):
+        return 'A' in self.flags
+
     def __repr__(self):
         return '<User %r>' % (self.username)
+
+class Event(db.Model):
+    __tablename__ = "events"
+    id = db.Column('event_id', db.Integer, primary_key = True)
+    name = db.Column('name', db.String(255))
+    description = db.Column('description', db.Text())
+    amount = db.Column('target', db.Integer)
+    paypal_email = db.Column('paypal_email', db.String(255))
+    paypal_sandbox = db.Column('paypal_sandbox', db.Boolean())
+
+    def __init__(self):
+        pass
+
+    def paypal_url(self):
+        if self.paypal_sandbox == True:
+            return "https://www.sandbox.paypal.com/cgi-bin/webscr"
+        else:
+            return "https://www.paypal.com/cgi-bin/webscr"
+
+    def donations(self):
+        sum_int = Donation.query.with_entities(func.sum(Donation.amount)).filter(Donation.status > 1).scalar()
+        sum = "0.00"
+        if sum_int:
+            sum = "%.2f" % (float(sum_int) / 100)
+        return sum
 
 class Donation(db.Model):
     __tablename__ = "donations"
@@ -77,7 +105,7 @@ class Incentive(db.Model):
     name = db.Column('name', db.String(255))
     amount = db.Column('amount', db.Integer)
     cutoff_time = db.Column('cutoff_time', db.DateTime)
-    status = db.Column('status', db.Integer)
+    status = db.Column('status', db.Boolean())
     donations = db.relationship('Donation', backref='incentive', lazy='dynamic')
 
     def __init__(self, name = None, amount = 0, cutoff_time = None):
@@ -87,11 +115,14 @@ class Incentive(db.Model):
         self.status = 0
 
     def __repr__(self):
-        return '%r (Target: %r)' % (self.name, self.amount)
+        return '%s' % (self.name)
 
     def donated(self):
         donated_int = Donation.query.with_entities(func.sum(Donation.amount)).filter(Donation.incentive_id == self.id).scalar()
-        return "%.2f" % (float(donated_int)/100.0)
+        if donated_int: 
+            return "%.2f" % (float(donated_int)/100.0)
+        else:
+            return "0.00"
 
 
 class IPN(db.Model):
@@ -127,4 +158,4 @@ class IPN(db.Model):
         pass
 
     def __repr__(self):
-        return '%r, %r, %r' % (self.payer_email, self.mc_gross, self.custom)
+        return '%r' % (self.payer_email)
