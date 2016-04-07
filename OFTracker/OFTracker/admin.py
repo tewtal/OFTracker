@@ -2,7 +2,7 @@ from flask_admin import expose, Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from sqlalchemy import func
-from flask import url_for
+from flask import url_for, redirect
 
 class OFModelView(ModelView):
     def is_accessible(self):
