@@ -24,6 +24,7 @@
     <WebBrowserPort>50080</WebBrowserPort>
     <WebBrowserUrl>
     </WebBrowserUrl>
+    <NameOfLastUsedPublishProfile>oceanfly</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,7 @@
     <Folder Include="OFTracker\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="oceanfly.pubxml" />
     <Content Include="OFTracker\templates\donate_paypal.html" />
     <Content Include="OFTracker\templates\login.html" />
     <Content Include="OFTracker\templates\_formhelpers.html" />
