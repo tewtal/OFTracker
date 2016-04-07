@@ -49,9 +49,9 @@ def donate():
 
         # Redirect to paypal donation page
         form_data = {
-            'business' : 'oceanfly-facilitator@crocomi.re',
+            'business' : g.event.paypal_email,
             'cmd' : '_donations',
-            'item_name' : 'Oceanfly to SGDQ 2016',
+            'item_name' : g.event.name,
             'amount' : str(round(donation.amount/100.0, 2)),
             'currency_code' : 'USD',
             'return' : url_for('donated', _external=True),
