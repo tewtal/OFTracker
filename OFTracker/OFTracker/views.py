@@ -91,8 +91,6 @@ def ipn():
 
     verification_status = r.text.encode('ascii','ignore')
 
-    log(repr(request.form))
-
     # always create a IPN post, and if it is verified and complete, link it to a donation
     i = IPN()
     i.verification_status = verification_status
@@ -144,3 +142,15 @@ def ipn():
             db.session.commit()
 
     return('', 200)
+
+
+@app.route('/api/donations/')
+def api_donations():
+    donations = g.event.donations()
+    return jsonify({"donations" : {"amount" : donations, "target" : "%.2f" % float(g.event.amount) }})
+
+@app.route('/api/incentives/')
+def api_incentives():
+    incentives = Incentive.query.filter_by(status = 0).filter(Incentive.cutoff_time >= datetime.now()).order_by(Incentive.cutoff_time.asc()).limit(5).all()
+    return jsonify({"incentives", incentives})
+
